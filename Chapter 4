@@ -1,0 +1,67 @@
+# Chapter 4 Exercises
+
++------------+-------------+--------+--------------------+
+| payment_id | customer_id | amount | date(payment_date) |
++------------+-------------+--------+--------------------+
+|        101 |           4 |   8.99 | 2005-08-18         |
+|        102 |           4 |   1.99 | 2005-08-19         |
+|        103 |           4 |   2.99 | 2005-08-20         |
+|        104 |           4 |   6.99 | 2005-08-20         |
+|        105 |           4 |   4.99 | 2005-08-21         |
+|        106 |           4 |   2.99 | 2005-08-22         |
+|        107 |           4 |   1.99 | 2005-08-23         |
+|        108 |           5 |   0.99 | 2005-05-29         |
+|        109 |           5 |   6.99 | 2005-05-31         |
+|        110 |           5 |   1.99 | 2005-05-31         |
+|        111 |           5 |   3.99 | 2005-06-15         |
+|        112 |           5 |   2.99 | 2005-06-16         |
+|        113 |           5 |   4.99 | 2005-06-17         |
+|        114 |           5 |   2.99 | 2005-06-19         |
+|        115 |           5 |   4.99 | 2005-06-20         |
+|        116 |           5 |   4.99 | 2005-07-06         |
+|        117 |           5 |   2.99 | 2005-07-08         |
+|        118 |           5 |   4.99 | 2005-07-09         |
+|        119 |           5 |   5.99 | 2005-07-09         |
+|        120 |           5 |   1.99 | 2005-07-09         |
++------------+-------------+--------+--------------------+
+
+## 4-1 Which of the payment IDs would be returned by the following filter conditions?
+customer_id <> 5 AND (amount > 8 OR date(payment_date) = '2005-08-23')
+### Solution: Definitely 101 and 107 sir
+
+## 4-2 Which of the payment IDs would be returned by the following filter conditions?
+customer_id = 5 AND NOT (amount > 6 OR date(payment_date) = '2005-06-19')
+### Solution: 
+costumer_id = 5 are 108-120
+eliminaed in NOT (amount > 6 OR date(payment_date) = '2005-06-19') are 109, 114
+the answer: 108, 110, 111, 112, 113, 115, 116-120
+
+## 4-3 Construct a query that retrieves all rows from the payments table where the amount
+is either 1.98, 7.98, or 9.98
+### SQL Query Solution
+SELECT payment_id, customer_id, staff_id, rental_id, amount, payment_date, last_update
+FROM payment
+WHERE amount IN (1.99, 3.99, 7.99);
+
+(In this case I don't add the output here because the output length is 2416 rows)
+
+## 4-4 Construct a query that finds all customers whose last name contains an A in the sec
+ond position and a W anywhere after the A.
+### Solution
+mysql> SELECT customer_id, first_name, last_name
+    -> FROM customer
+    -> WHERE last_name LIKE '_A%W%';
++-------------+------------+------------+
+| customer_id | first_name | last_name  |
++-------------+------------+------------+
+|         159 | JILL       | HAWKINS    |
+|         169 | ERICA      | MATTHEWS   |
+|         192 | LAURIE     | LAWRENCE   |
+|         200 | JEANNE     | LAWSON     |
+|         272 | KAY        | CALDWELL   |
+|         300 | JOHN       | FARNSWORTH |
+|         358 | SAMUEL     | MARLOW     |
+|         361 | LAWRENCE   | LAWTON     |
+|         421 | LEE        | HAWKS      |
++-------------+------------+------------+
+9 rows in set (0.07 sec)
