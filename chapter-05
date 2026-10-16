@@ -1,0 +1,112 @@
+# Chapter 5 Exercises
+
+## 5-1 Fill in the blanks (denoted by <#>) for the following query to obtain the results that
+follow:
+mysql> SELECT c.first_name, c.last_name, a.address, ct.city
+    -> FROM customer c
+    ->   INNER JOIN address <1>
+    ->   ON c.address_id = a.address_id
+    ->   INNER JOIN city ct
+    ->   ON a.city_id = <2>
+    -> WHERE a.district = 'California';
++------------+-----------+------------------------+----------------+
+| first_name | last_name | address                | city           |
++------------+-----------+------------------------+----------------+
+| PATRICIA   | JOHNSON   | 1121 Loja Avenue       | San Bernardino |
+| BETTY      | WHITE     | 770 Bydgoszcz Avenue   | Citrus Heights |
+| ALICE      | STEWART   | 1135 Izumisano Parkway | Fontana        |
+| ROSA       | REYNOLDS  | 793 Cam Ranh Avenue    | Lancaster      |
+| RENEE      | LANE      | 533 al-Ayn Boulevard   | Compton        |
+| KRISTIN    | JOHNSTON  | 226 Brest Manor        | Sunnyvale      |
+| CASSANDRA  | WALTERS   | 920 Kumbakonam Loop    | Salinas        |
+| JACOB      | LANCE     | 1866 al-Qatif Avenue   | El Monte       |
+| RENE       | MCALISTER | 1895 Zhezqazghan Drive | Garden Grove   |
++------------+-----------+------------------------+----------------+
+9 rows in set (0.00 sec
+
+### Solution (SQL QUERY)
+mysql> SELECT c.first_name, c.last_name, a.address, ct.city
+    -> FROM customer c
+    -> INNER JOIN address a
+    -> ON c.address_id = a.address_id
+    -> INNER JOIN city ct
+    -> ON a.city_id = ct.city_id
+    -> WHERE a.district = 'California';
+
+## 5-2 Write a query that returns the title of every film in which an actor with the first name JOHN appeared
+#### Solution
+mysql> SELECT title
+    -> FROM film
+    -> JOIN film_actor
+    -> ON film.film_id = film_actor.film_id
+    -> JOIN actor
+    -> ON film_actor.actor_id = actor.actor_id
+    -> WHERE actor.first_name = 'JOHN';
+
+Or, we can use table alias as well (in this phase of learning, i still confused while 
+using table alias). But, I managed to write it
+mysql> SELECT f.title
+    -> FROM film f
+    -> JOIN film_actor fa
+    -> ON f.film_id = fa.film_id
+    -> JOIN actor a
+    -> ON fa.actor_id = a.actor_id
+    -> WHERE a.first_name = 'JOHN';
+
+It's just the same, but in this case, table alias shortened the query. The output:
++---------------------------+
+| title                     |
++---------------------------+
+| ALLEY EVOLUTION           |
+| BEVERLY OUTLAW            |
+| CANDLES GRAPES            |
+| CLEOPATRA DEVIL           |
+| COLOR PHILADELPHIA        |
+| CONQUERER NUTS            |
+| DAUGHTER MADIGAN          |
+| GLEAMING JAWBREAKER       |
+| GOLDMINE TYCOON           |
+| HOME PITY                 |
+| INTERVIEW LIAISONS        |
+| ISHTAR ROCKETEER          |
+| JAPANESE RUN              |
+| JERSEY SASSY              |
+| LUKE MUMMY                |
+| MILLION ACE               |
+| MONSTER SPARTACUS         |
+| NAME DETECTIVE            |
+| NECKLACE OUTBREAK         |
+| NEWSIES STORY             |
+| PET HAUNTING              |
+| PIANIST OUTFIELD          |
+| PINOCCHIO SIMON           |
+| PITTSBURGH HUNCHBACK      |
+| QUILLS BULL               |
+| RAGING AIRPLANE           |
+| ROXANNE REBEL             |
+| SATISFACTION CONFIDENTIAL |
+| SONG HEDWIG               |
++---------------------------+
+29 rows in set (0.02 sec)
+
+## 5-3 Construct a query that returns all addresses that are in the same city. You will need to
+join the address table to itself, and each row should include two different addresses.
+
+### Solution
+In this case, the usage of table alias is necessary, because of the self-join. 
+mysql> SELECT a1.address, a2.address, a1.city_id
+    -> FROM address a1
+    -> INNER JOIN address a2
+    -> ON a1.city_id = a2.city_id
+    -> AND a1.address_id < a2.address_id;
++--------------------+----------------------+---------+
+| address            | address              | city_id |
++--------------------+----------------------+---------+
+| 47 MySakila Drive  | 23 Workhaven Lane    |     300 |
+| 28 MySQL Boulevard | 1411 Lillydale Drive |     576 |
+| 1497 Yuzhou Drive  | 548 Uruapan Street   |     312 |
+| 587 Benguela Manor | 43 Vilnius Manor     |      42 |
++--------------------+----------------------+---------+
+4 rows in set (0.01 sec)
+
+
