@@ -1,0 +1,50 @@
+# Chapter 8 Exercises
+
+## 8-1 Construct a query that counts the number of rows in the payment table
+### Solution (SQL Query)
+mysql> SELECT count(*)
+    -> FROM payment;
++----------+
+| count(*) |
++----------+
+|    16044 |
++----------+
+1 row in set (0.03 sec)
+
+## 8-2 Modify your query from Exercise 8-1 to count the number of payments made by each
+customer. Show the customer ID and the total amount paid for each customer
+### Solution (SQL Query)
+mysql> SELECT customer_id, count(*) num_of_payments, sum(amount) amount_paid
+    -> FROM payment
+    -> GROUP BY customer_id;
++-------------+-----------------+-------------+
+| customer_id | num_of_payments | amount_paid |
++-------------+-----------------+-------------+
+|           1 |              32 |      118.68 |
+|           2 |              27 |      128.73 |
+|           3 |              26 |      135.74 |
+...
+|         598 |              22 |       83.78 |
+|         599 |              19 |       83.81 |
++-------------+-----------------+-------------+
+599 rows in set (0.04 sec)
+
+## 8-3 Modify your query from Exercise 8-2 to include only those customers who have
+made at least 40 payments
+### Solution (SQL Query)
+mysql> SELECT customer_id, count(*) num_of_payments, sum(amount) amount_paid
+    -> FROM payment
+    -> GROUP BY customer_id
+    -> HAVING count(*) >= 40;
++-------------+-----------------+-------------+
+| customer_id | num_of_payments | amount_paid |
++-------------+-----------------+-------------+
+|          75 |              41 |      155.59 |
+|         144 |              42 |      195.58 |
+|         148 |              46 |      216.54 |
+|         197 |              40 |      154.60 |
+|         236 |              42 |      175.58 |
+|         469 |              40 |      177.60 |
+|         526 |              45 |      221.55 |
++-------------+-----------------+-------------+
+7 rows in set (0.11 sec)
