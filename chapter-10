@@ -1,0 +1,79 @@
+# Chapter 10 Exercises
+
+## 10-1 Using the following table definitions and data, write a query that returns each cus
+tomer name along with their total payments. Include all customers, even if no payment records exist for that customer
+### Solution
+mysql> SELECT CONCAT(c.first_name, ' ', c.last_name) customer_name, SUM(p.amount) total_payments
+    -> FROM customer c
+    -> LEFT OUTER JOIN payment p
+    -> ON c.customer_id = p.customer_id
+    -> GROUP BY c.customer_id;
++-----------------------+----------------+
+| customer_name         | total_payments |
++-----------------------+----------------+
+| MARY SMITH            |         118.68 |
+| PATRICIA JOHNSON      |         128.73 |
+| LINDA WILLIAMS        |         135.74 |
+...
+| WADE DELVALLE         |          83.78 |
+| AUSTIN CINTRON        |          83.81 |
++-----------------------+----------------+
+599 rows in set (0.17 sec)
+
+## 10-2 Reformulate your query from Exercise 10-1 to use the other outer join type (e.g., if
+you used a left outer join in Exercise 10-1, use a right outer join this time) such that
+the results are identical to Exercise 10-1.
+### Solution
+  mysql> SELECT CONCAT(c.first_name, ' ', c.last_name) customer_name, SUM(p.amount) total_payments
+    -> FROM payment p
+    -> RIGHT OUTER JOIN customer c
+    -> ON p.customer_id = c.customer_id
+    -> GROUP BY c.customer_id;
++-----------------------+----------------+
+| customer_name         | total_payments |
++-----------------------+----------------+
+| MARY SMITH            |         118.68 |
+| PATRICIA JOHNSON      |         128.73 |
+| LINDA WILLIAMS        |         135.74 |
+  ...
+| WADE DELVALLE         |          83.78 |
+| AUSTIN CINTRON        |          83.81 |
++-----------------------+----------------+
+599 rows in set (0.08 sec)
+
+## 10-3 Devise a query that will generate the set {1, 2, 3, ..., 99, 100}. (Hint: use a cross join
+with at least two from clause subqueries.)
+mysql> SELECT ones.x, tens.x + 1
+    -> FROM
+    -> (SELECT 0 x UNION ALL
+    -> SELECT 1 x UNION ALL
+    -> SELECT 2 x UNION ALL
+    -> SELECT 3 x UNION ALL
+    -> SELECT 4 x UNION ALL
+    -> SELECT 5 x UNION ALL
+    -> SELECT 6 x UNION ALL
+    -> SELECT 7 x UNION ALL
+    -> SELECT 8 x UNION ALL
+    -> SELECT 9 x )
+    -> ones CROSS JOIN
+    -> (SELECT 0 x UNION ALL
+    -> SELECT 10 x UNION ALL
+    -> SELECT 20 x UNION ALL
+    -> SELECT 30 x UNION ALL
+    -> SELECT 40 x UNION ALL
+    -> SELECT 50 x UNION ALL
+    -> SELECT 60 x UNION ALL
+    -> SELECT 70 x UNION ALL
+    -> SELECT 80 x UNION ALL
+    -> SELECT 90 x ) tens;
++---+------------+
+| x | tens.x + 1 |
++---+------------+
+| 9 |          1 |
+| 8 |          1 |
+| 7 |          1 |
+...
+| 1 |         91 |
+| 0 |         91 |
++---+------------+
+100 rows in set (0.06 sec)
