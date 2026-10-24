@@ -1,0 +1,26 @@
+# Chapter 12 Exercise
+
+## 12-1 Generate a unit of work to transfer $50 from account 123 to account 789. You will
+need to insert two rows into the transaction table and update two rows in the
+account table. Use the following table definitions/data:
+### Solution
+  Disclaimer: I don't have any transaction database, so i just try to write as best as I can
+mysql> START TRANSACTION;
+Query OK, 0 rows affected (0.03 sec)
+mysql> INSERT INTO transaction
+    -> (txn_id, txn_date, account_id, txn_type_cd, amount)
+    -> VALUES
+    -> (1003, now(), 123, 'D', 50);
+mysql> INSERT INTO transaction
+    -> (txn_id, txn_date, account_id, txn_type_cd, amount)
+    -> VALUES
+    -> (1004, now(), 789, 'C', 50);
+mysql> UPDATE account
+    -> SET avail_balance = available_balance - 50,
+    -> last_activity_date = now()
+    -> WHERE account_id = 123;
+mysql> UPDATE account
+    -> SET avail_balance = available_balance + 50,
+    -> last_activity_date = now()
+    -> WHERE account_id = 789;
+COMMIT;
