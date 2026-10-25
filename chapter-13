@@ -1,0 +1,28 @@
+# Chapter 13 Exercises
+
+## 13-1 Generate an alter table statement for the rental table so that an error will be
+raised if a row having a value found in the rental.customer_id column is deleted
+from the customer table.
+### Solution
+   mysql> ALTER TABLE rental
+    -> ADD CONSTRAINT fk_rental_customer_id FOREIGN KEY (customer_id)
+    -> REFERENCES customer (customer_id) ON DELETE RESTRICT;
+Query OK, 16044 rows affected (2.64 sec)
+Records: 16044  Duplicates: 0  Warnings: 0
+
+  ## 13-2 Generate a multicolumn index on the payment table that could be used by both of the
+following queries:
+
+SELECT customer_id, payment_date, amount
+FROM payment
+WHERE payment_date > cast('2019-12-31 23:59:59' as datetime);
+
+SELECT customer_id, payment_date, amount
+FROM payment
+WHERE payment_date > cast('2019-12-31 23:59:59' as datetime)
+  AND amount < 5;
+### Solution 
+mysql> ALTER TABLE payment
+    -> ADD INDEX idx_paydate_amount (payment_date, amount);
+Query OK, 0 rows affected (0.40 sec)
+Records: 0  Duplicates: 0  Warnings: 0
