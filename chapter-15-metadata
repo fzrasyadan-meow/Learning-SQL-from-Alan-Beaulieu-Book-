@@ -1,0 +1,62 @@
+# Chapter 15 Exercises
+
+## 15-1 Write a query that lists all of the indexes in the Sakila schema. Include the table
+names.
+### Solution
+mysql> SELECT DISTINCT table_name, index_name
+    -> FROM information_schema.statistics
+    -> WHERE table_schema = 'sakila';
++---------------+-----------------------------+
+| TABLE_NAME    | INDEX_NAME                  |
++---------------+-----------------------------+
+| actor         | idx_actor_last_name         |
+| actor         | PRIMARY                     |
+| address       | idx_fk_city_id              |
+| address       | idx_location                |
+| address       | PRIMARY                     |
+| category      | PRIMARY                     |
+| city          | idx_fk_country_id           |
+| city          | PRIMARY                     |
+| country       | PRIMARY                     |
+| customer      | idx_fk_address_id           |
+| customer      | idx_fk_store_id             |
+| customer      | idx_full_name               |
+| customer      | idx_last_name               |
+| customer      | PRIMARY                     |
+| film          | idx_fk_language_id          |
+| film          | idx_fk_original_language_id |
+| film          | idx_title                   |
+| film          | PRIMARY                     |
+| film_actor    | idx_fk_film_id              |
+| film_actor    | PRIMARY                     |
+| film_category | fk_film_category_category   |
+| film_category | PRIMARY                     |
+| film_text     | idx_title_description       |
+| film_text     | PRIMARY                     |
+| inventory     | idx_fk_film_id              |
+| inventory     | idx_store_id_film_id        |
+| inventory     | PRIMARY                     |
+| language      | PRIMARY                     |
+| payment       | fk_payment_rental           |
+| payment       | idx_fk_customer_id          |
+| payment       | idx_fk_staff_id             |
+| payment       | idx_paydate_amount          |
+| payment       | PRIMARY                     |
+| rental        | idx_fk_customer_id          |
+| rental        | idx_fk_inventory_id         |
+| rental        | idx_fk_staff_id             |
+| rental        | PRIMARY                     |
+| rental        | rental_date                 |
+| staff         | idx_fk_address_id           |
+| staff         | idx_fk_store_id             |
+| staff         | PRIMARY                     |
+| store         | idx_fk_address_id           |
+| store         | idx_unique_manager          |
+| store         | PRIMARY                     |
++---------------+-----------------------------+
+44 rows in set (0.42 sec)
+
+## 15-2 Write a query that generates output that can be used to create all of the indexes on the
+sakila.customer table. Output should be of the form:
+"ALTER TABLE <table_name> ADD INDEX <index_name> (<column_list>)"
+### Solution
